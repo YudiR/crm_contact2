@@ -6,19 +6,12 @@ ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'crm.sqlit
 
 class Contact < ActiveRecord::Base
 
-    def initialize(first_name, last_name, email, note)
-      @first_name = first_name
-      @last_name = last_name
-      @email = email
-      @note = note
-    end
-
     field :first_name, as: :string 
     field :last_name, as: :string
     field :email,      as: :string
     field :note,       as: :text
 
-    def full_name
+   def full_name
         "#{ first_name } #{ last_name }"
     end
   

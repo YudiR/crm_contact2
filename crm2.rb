@@ -45,47 +45,65 @@ class CRM < Contact
     email = gets.chomp
     puts "note"
     note = gets.chomp
-  Contact.create(first_name, last_name, email, note)
+    Contact.create(
+        first_name: first_name,
+        last_name:  last_name,
+        email:      email,
+        note:       note
+      )
   end
 
   def modify_existing_contact
-      puts "enter id of the contact that you want to modify"
-      id = gets.chomp
-      @@contacts.each do |a|
-        if a.id == id 
-           contact = a 
-          end
-        end
+      puts "enter the name of the contact"
+      name = gets.chomp
+      contact = nil 
+      contact = Contact.find_by(first_name: name )
       puts "what do you want to update?"
       answer = gets.chomp
       puts "what is the change?"
       change = gets.chomp
-      contact.update(answer,change)    
+
+      if answer == "email"
+      contact.update(email: change)
+      elsif answer == "first name"
+      contact.update(first_name: change)
+      elsif answer == "last name"
+      contact.update(last_name: change)
+      elsif answer == "note"
+        contact.update(note: change)
+      end   
   end
 
   def delete_contact
     puts "enter the id of the contact you wish to delete"
       id = gets.chomp.to_i 
       contact = nil
-      @@contacts.each do |c|
-        if c.id == id
-          contact = c 
-        end
-      end
-      contact.delete if contact != nil
-      # error
+      contact = Contact.find(id)
+      contact.delete
   end
 
   def display_all_contacts
-       puts Contact.all
+       puts Contact.all.inspect
     
   end
 
   def search_by_attribute
-    puts "what is the contacts first name?"
-     f_n = gets.chomp 
-   c = Contact.find_by(f_n)
-    puts c 
+    puts "what attribute do you wish to search with?"
+     attribute = gets.chomp
+    puts "what is the value?"
+     value = gets.chomp
+    if attribute == "id"
+      c = Contact.find_by(id: value.to_i)
+    elsif attribute == "first name"
+      c = Contact.find_by(first_name: value)
+    elsif attribute == "last name"
+      c = Contact.find_by(last_name: value)
+    elsif attribute =="email"
+      c = Contact.find_by(email: value)
+    elsif attribute == "note"
+      c = Contact.find_by(note: value)
+    end
+    puts c.inspect
   end
 
 
